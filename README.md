@@ -1,25 +1,272 @@
-# ECMAScript6 编码规范--广发证券前端团队
+# React Native 代码规范
 
-> 本规范是基于JavaScript规范拟定的，只针对ES6相关内容进行约定
+> 本规范是基于airbnb的[react代码规范](https://github.com/airbnb/javascript/tree/master/react)与广发证券前端团队的[ES6代码规范](https://github.com/gf-rd/es6-coding-style)修改而成。感谢这两个团队！
 
-> 如变量命名，是否加分号等约定的请参考JavaScript规范
+> 本规范主要用于React Native项目，原则是提升效率、规避风险。
 
-> 应注意目前的代码转换工具(如Babel，Traceur)不够完善,有些特性须谨慎使用
+> 另有[React Native项目结构指南](https://github.com/sunnylqm/react-native-project-structure-guide)。
 
-### [ES6 Coding Style English Version](https://github.com/gf-web/es6-coding-style/blob/master/es6-coding-style-en.md)
 
-## 规范内容
+## 内容目录
+	
+- [React/JSX代码规范](#React/JSX代码规范)
+  - [文件与组件命名](#文件与组件命名)
+  - [组件声明](#组件声明 )
+  - [对齐](#对齐)
+  - [引号](#引号)
+  - [空格](#空格)
+  - [Props](#props)
+  - [括号](#括号)
+  - [标签](#标签)
+  - [方法](#方法)
+  - [方法声明的顺序](#方法声明的顺序)
+- [ES6代码规范](#ES6代码规范)
+  - [变量与常量声明](#变量与常量声明)
+  - [字符串](#字符串)
+  - [解构](#解构)
+  - [数组](#数组)
+  - [函数](#函数)
+  - [类](#类)
+  - [模块](#模块)
 
-1. [声明 Declarations](#声明)
-2. [字符串 Strings](#字符串)
-3. [解构 Destructuring](#解构)
-4. [数组 Arrays](#数组)
-5. [函数 Functions](#函数)
-6. [类 Classes](#类)
-7. [模块 Modules](#模块)
-8. [版权 Copyright](#copyright)
+## React/JSX代码规范
+## 文件与组件命名
 
-### 声明
+  - **扩展名**: 使用`.js`作为js文件的扩展名。如果同一个文件夹下有同名而不同作用的js文件，则通过中缀（小写）进一步区分，例如：`HomeView.component.js`,`HomeView.style.js`,`HomeView.action.js`等。
+  - **文件名**: 使用驼峰命名法且首字母大写，如`HomeView.js`。
+  - **组件命名**: 与文件名（除中缀外）完全一致。如果组件单独放置在目录中，则目录名也一致。  
+  
+    ```javascript
+    // bad
+    import Footer from './Component/Footer/FooterView'
+
+    // good
+    import Footer from './Component/Footer/Footer'
+
+    // good
+    import Footer from './Footer'
+    ```
+
+
+## 组件声明
+  - 使用class与extends关键字。不使用React.createClass方法。需要导出的组件直接在class关键字前使用export default。
+    ```javascript
+    // bad
+    export default React.createClass({
+    });
+
+    // good
+    export default class HomeView extends React.Component {
+    }
+    ```
+
+## 对齐
+  - Follow these alignment styles for JSX syntax
+
+    ```javascript
+    // bad
+    <Foo superLongParam="bar"
+         anotherSuperLongParam="baz" />
+
+    // good
+    <Foo
+      superLongParam="bar"
+      anotherSuperLongParam="baz"
+    />
+
+    // if props fit in one line then keep it on the same line
+    <Foo bar="bar" />
+
+    // children get indented normally
+    <Foo
+      superLongParam="bar"
+      anotherSuperLongParam="baz"
+    >
+      <Spazz />
+    </Foo>
+    ```
+
+## 引号
+  - Always use double quotes (`"`) for JSX attributes, but single quotes for all other JS.
+
+  > Why? JSX attributes [can't contain escaped quotes](http://eslint.org/docs/rules/jsx-quotes), so double quotes make conjunctions like `"don't"` easier to type.
+  > Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
+
+    ```javascript
+    // bad
+    <Foo bar='bar' />
+
+    // good
+    <Foo bar="bar" />
+
+    // bad
+    <Foo style={{ left: "20px" }} />
+
+    // good
+    <Foo style={{ left: '20px' }} />
+    ```
+
+## 空格
+  - Always include a single space in your self-closing tag.
+    ```javascript
+    // bad
+    <Foo/>
+
+    // very bad
+    <Foo                 />
+
+    // bad
+    <Foo
+     />
+
+    // good
+    <Foo />
+    ```
+
+## Props
+  - Always use camelCase for prop names.
+    ```javascript
+    // bad
+    <Foo
+      UserName="hello"
+      phone_number={12345678}
+    />
+
+    // good
+    <Foo
+      userName="hello"
+      phoneNumber={12345678}
+    />
+    ```
+
+## 括号
+  - Wrap JSX tags in parentheses when they span more than one line:
+    ```javascript
+    /// bad
+    render() {
+      return <MyComponent className="long body" foo="bar">
+               <MyChild />
+             </MyComponent>;
+    }
+
+    // good
+    render() {
+      return (
+        <MyComponent className="long body" foo="bar">
+          <MyChild />
+        </MyComponent>
+      );
+    }
+
+    // good, when single line
+    render() {
+      const body = <div>hello</div>;
+      return <MyComponent>{body}</MyComponent>;
+    }
+    ```
+
+## 标签
+  - Always self-close tags that have no children.
+    ```javascript
+    // bad
+    <Foo className="stuff"></Foo>
+
+    // good
+    <Foo className="stuff" />
+    ```
+
+  - If your component has multi-line properties, close its tag on a new line.
+    ```javascript
+    // bad
+    <Foo
+      bar="bar"
+      baz="baz" />
+
+    // good
+    <Foo
+      bar="bar"
+      baz="baz"
+    />
+    ```
+
+## 方法
+  - Do not use underscore prefix for internal methods of a React component.
+    ```javascript
+    // bad
+    React.createClass({
+      _onClickSubmit() {
+        // do stuff
+      }
+
+      // other stuff
+    });
+
+    // good
+    class extends React.Component {
+      onClickSubmit() {
+        // do stuff
+      }
+
+      // other stuff
+    });
+    ```
+
+## 方法声明的顺序
+
+  - Ordering for class extends React.Component:
+  
+  1. constructor
+  1. optional static methods
+  1. getChildContext
+  1. componentWillMount
+  1. componentDidMount
+  1. componentWillReceiveProps
+  1. shouldComponentUpdate
+  1. componentWillUpdate
+  1. componentDidUpdate
+  1. componentWillUnmount
+  1. *clickHandlers or eventHandlers* like onClickSubmit() or onChangeDescription()
+  1. *getter methods for render* like getSelectReason() or getFooterContent()
+  1. *Optional render methods* like renderNavigation() or renderProfilePicture()
+  1. render
+
+  - How to define propTypes, defaultProps, contextTypes, etc...  
+
+  ```javascript
+  import React, { Component, PropTypes } from 'react';
+  
+  const propTypes = {
+    id: PropTypes.number.isRequired,
+    url: PropTypes.string.isRequired,
+    text: PropTypes.string,
+  };
+  
+  const defaultProps = {
+    text: 'Hello World',
+  };
+  
+  class Link extends Component {
+    static methodsAreOk() {
+      return true;
+    }
+  
+    render() {
+      return <a href={this.props.url} data-id={this.props.id}>{this.props.text}</a>
+    }
+  }
+  
+  Link.propTypes = propTypes;
+  Link.defaultProps = defaultProps;
+  
+  export default Link;
+  ```
+
+**[⬆ 回到目录](#内容目录)**
+
+## ES6代码规范
+
+
+### 变量与常量的声明
 
 - 1.1 变量
 
@@ -765,7 +1012,4 @@ const white  = '#FFF';
 
 export default { lightRed, black, white };
 ```
-
-#### Copyright
-
-Copyright (c) 2015 [广发证券IT](http://it.gf.com.cn)
+**[⬆ 回到目录](#内容目录)**
