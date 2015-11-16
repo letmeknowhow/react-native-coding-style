@@ -9,9 +9,9 @@
 
 ## 内容目录
 	
-- [React/JSX代码规范](#React/JSX代码规范)
+- [React代码规范](#React代码规范)
   - [文件与组件命名](#文件与组件命名)
-  - [组件声明](#组件声明 )
+  - [组件声明](#组件声明)
   - [对齐](#对齐)
   - [引号](#引号)
   - [空格](#空格)
@@ -29,7 +29,7 @@
   - [类](#类)
   - [模块](#模块)
 
-## React/JSX代码规范
+## React(JSX)代码规范
 ## 文件与组件命名
 
   - **扩展名**: 使用`.js`作为js文件的扩展名。如果同一个文件夹下有同名而不同作用的js文件，则通过中缀（小写）进一步区分，例如：`HomeView.component.js`,`HomeView.style.js`,`HomeView.action.js`等。
@@ -61,7 +61,7 @@
     ```
 
 ## 对齐
-  - Follow these alignment styles for JSX syntax
+  - 按下面的案例对齐：
 
     ```javascript
     // bad
@@ -74,10 +74,10 @@
       anotherSuperLongParam="baz"
     />
 
-    // if props fit in one line then keep it on the same line
+    // 如果一行能摆下props，那就摆在一行
     <Foo bar="bar" />
 
-    // children get indented normally
+    // 子组件照常缩进
     <Foo
       superLongParam="bar"
       anotherSuperLongParam="baz"
@@ -87,10 +87,7 @@
     ```
 
 ## 引号
-  - Always use double quotes (`"`) for JSX attributes, but single quotes for all other JS.
-
-  > Why? JSX attributes [can't contain escaped quotes](http://eslint.org/docs/rules/jsx-quotes), so double quotes make conjunctions like `"don't"` easier to type.
-  > Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
+  - 对于JSX的字符串属性使用双引号(`"`)，其他情况下使用单引号。
 
     ```javascript
     // bad
@@ -107,7 +104,7 @@
     ```
 
 ## 空格
-  - Always include a single space in your self-closing tag.
+  - 在自闭合的标签中包含一个空格。
     ```javascript
     // bad
     <Foo/>
@@ -124,7 +121,7 @@
     ```
 
 ## Props
-  - Always use camelCase for prop names.
+  - 对于多个单词组成的pros，使用驼峰命名法。不使用下划线或连接线。
     ```javascript
     // bad
     <Foo
@@ -140,7 +137,7 @@
     ```
 
 ## 括号
-  - Wrap JSX tags in parentheses when they span more than one line:
+  - 当JSX标签超过一行时，使用括号包裹。
     ```javascript
     /// bad
     render() {
@@ -166,7 +163,7 @@
     ```
 
 ## 标签
-  - Always self-close tags that have no children.
+  - 对于没有子组件的JSX标签，始终自闭合。
     ```javascript
     // bad
     <Foo className="stuff"></Foo>
@@ -175,7 +172,7 @@
     <Foo className="stuff" />
     ```
 
-  - If your component has multi-line properties, close its tag on a new line.
+  - 如果组件有多行属性，则另起一行进行自闭合。
     ```javascript
     // bad
     <Foo
@@ -190,7 +187,7 @@
     ```
 
 ## 方法
-  - Do not use underscore prefix for internal methods of a React component.
+  - 为方法命名时，不使用下划线开头（哪怕是想用作私有方法）。
     ```javascript
     // bad
     React.createClass({
@@ -213,10 +210,10 @@
 
 ## 方法声明的顺序
 
-  - Ordering for class extends React.Component:
+  - 原则上按如下顺序排列React组件的各个方法（生命周期）：
   
   1. constructor
-  1. optional static methods
+  1. 静态方法（static methods)
   1. getChildContext
   1. componentWillMount
   1. componentDidMount
@@ -225,12 +222,12 @@
   1. componentWillUpdate
   1. componentDidUpdate
   1. componentWillUnmount
-  1. *clickHandlers or eventHandlers* like onClickSubmit() or onChangeDescription()
-  1. *getter methods for render* like getSelectReason() or getFooterContent()
-  1. *Optional render methods* like renderNavigation() or renderProfilePicture()
+  1. 点击处理或事件处理函数，比如onClickSubmit()、onChangeDescription()
+  1. 用在render中的getter方法，比如getSelectReason()、getFooterContent()
+  1. 可选的render方法，比如renderNavigation()、renderProfilePicture()
   1. render
 
-  - How to define propTypes, defaultProps, contextTypes, etc...  
+  - 按如下方式定义propTypes, defaultProps, contextTypes等  
 
   ```javascript
   import React, { Component, PropTypes } from 'react';
@@ -265,8 +262,7 @@
 
 ## ES6代码规范
 
-
-### 变量与常量的声明
+### 变量与常量声明
 
 - 1.1 变量
 
