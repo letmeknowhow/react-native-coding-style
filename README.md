@@ -15,7 +15,7 @@
   - [对齐](#对齐)
   - [引号](#引号)
   - [空格](#空格)
-  - [state & props](#state & props)
+  - [state/props](#state/props)
   - [括号](#括号)
   - [标签](#标签)
   - [方法](#方法)
@@ -30,7 +30,7 @@
   - [模块](#模块)
 
 ## React/JSX代码规范
-## 文件与组件命名
+### 文件与组件命名
 
   - **扩展名**: 使用`.js`作为js文件的扩展名。如果同一个文件夹下有同名而不同作用的js文件，则通过中缀（小写）进一步区分，例如：`HomeView.component.js`,`HomeView.style.js`,`HomeView.action.js`等。
   - **文件名**: 使用驼峰命名法且首字母大写，如`HomeView.js`。
@@ -48,7 +48,7 @@
     ```
 
 
-## 组件声明
+### 组件声明
   - 使用class与extends关键字。不使用React.createClass方法。需要导出的组件直接在class关键字前使用export default。
     ```javascript
     // bad
@@ -60,7 +60,7 @@
     }
     ```
 
-## 对齐
+### 对齐
   - 按下面的案例对齐：
 
     ```javascript
@@ -86,7 +86,7 @@
     </Foo>
     ```
 
-## 引号
+### 引号
   - 对于JSX的字符串属性使用双引号(`"`)，其他情况下使用单引号。
 
     ```javascript
@@ -103,7 +103,7 @@
     <Foo style={{ left: '20px' }} />
     ```
 
-## 空格
+### 空格
   - 在自闭合的标签中包含一个空格。
     ```javascript
     // bad
@@ -120,7 +120,7 @@
     <Foo />
     ```
 
-## state & props
+### state/props
   - 对于多个单词组成的pros，使用驼峰命名法。不使用下划线或连接线。
     ```javascript
     // bad
@@ -144,8 +144,9 @@
     // good
     const { userName, age, sex } = this.props;
     const { checked } = this.state;
-    ```
-## 括号
+    ```  
+    
+### 括号
   - 当JSX标签超过一行时，使用括号包裹。
     ```javascript
     /// bad
@@ -171,7 +172,7 @@
     }
     ```
 
-## 标签
+### 标签
   - 对于没有子组件的JSX标签，始终自闭合。
     ```javascript
     // bad
@@ -195,7 +196,7 @@
     />
     ```
 
-## 方法
+### 方法
   - 为方法命名时，不使用下划线开头（哪怕是想用作私有方法）。
     ```javascript
     // bad
@@ -217,7 +218,7 @@
     });
     ```
 
-## 方法声明的顺序
+### 方法声明的顺序
 
   - 原则上按如下顺序排列React组件的各个方法（生命周期）：
   
