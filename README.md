@@ -4,7 +4,7 @@
 
 > 本规范主要用于React Native项目，原则是提升效率、规避风险。
 
-> 另有[React Native项目结构指南](https://github.com/sunnylqm/react-native-project-structure-guide)。
+> 另有[React Native项目结构规范](https://github.com/sunnylqm/react-native-project-structure-guide)。
 
 
 ## 内容目录
@@ -15,7 +15,7 @@
   - [对齐](#对齐)
   - [引号](#引号)
   - [空格](#空格)
-  - [Props](#props)
+  - [state & props](#state & props)
   - [括号](#括号)
   - [标签](#标签)
   - [方法](#方法)
@@ -120,7 +120,7 @@
     <Foo />
     ```
 
-## Props
+## state & props
   - 对于多个单词组成的pros，使用驼峰命名法。不使用下划线或连接线。
     ```javascript
     // bad
@@ -135,7 +135,16 @@
       phoneNumber={12345678}
     />
     ```
+  - 读取state和props时，使用const与解构，必要时可使用let。不使用var。
+    ```javascript
+    // bad
+    var userName = this.props.userName;
+    let checked = this.state.checked;
 
+    // good
+    const { userName, age, sex } = this.props;
+    const { checked } = this.state;
+    ```
 ## 括号
   - 当JSX标签超过一行时，使用括号包裹。
     ```javascript
@@ -266,39 +275,15 @@
 
 - 1.1 变量
 
-> 对于只在当前作用域下有效的变量，应使用`let`来代替`var`
+> 尽量使用`let`来代替`var`
 
-> 对于全局变量声明，采用`var`，但应避免声明过多全局变量污染环境
-
-```js
-// 不好
-const variables;
-const globalObj = null; // 不是常量
-let globalObj = null;
-
-for (var i = 0; i < 5; i++) {
-  console.log(i);
-}
-console.log(i); // 4
-
-
-// 好
-let variables;
-var globalObj = null;
-
-for (let i = 0; i < 5; i++) {
-  console.log(i);
-}
-console.log(i); // ReferenceError: i is not defined
-```
+> 对于全局变量声明，采用`global.xxx = xxx`，但应避免声明过多全局变量污染环境
 
 - 1.2 常量
 
 > 对于常量应使用`const`进行声明，命名采用驼峰写法
 
 > 对于使用 immutable 数据应用`const`进行声明
-
-> 注意: `const`与`let`只在声明所在的块级作用域内有效
 
 ```js
 // 不好
@@ -361,38 +346,7 @@ const tmpl = `
 
 #### 解构
 
-- 3.1 嵌套结构的对象层数不能超过3层
-
-```js
-// 不好
-let obj = {
-  'one': [
-    {
-      'newTwo': [
-        {
-          'three': [
-            'four': '太多层了，头晕晕'
-          ]
-        }
-      ]
-    }
-  ]
-};
-
-
-// 好
-let obj = {
-  'one': [
-    'two',
-    {
-      'twoObj': '结构清晰'
-    }
-  ]
-};
-
-```
-
-- 3.2 解构语句中统一不使用圆括号
+- 3.1 解构语句中不使用圆括号
 
 ```js
 // 不好
@@ -404,13 +358,13 @@ let { a: (b) } = {}; // 解析出错
 let [a, b] = [11, 22];
 ```
 
-- 3.3 对象解构
+- 3.2 对象解构
 
 > 对象解构 元素与顺序无关
 
 > 对象指定默认值时仅对恒等于undefined ( !== null ) 的情况生效
 
-- 3.3.1 若函数形参为对象时，使用对象解构赋值
+- 3.2.1 若函数形参为对象时，使用对象解构赋值
 
 ```js
 // 不好
@@ -432,7 +386,7 @@ function someFun({ opt1, opt2 }) {
 }
 ```
 
-- 3.3.2 若函数有多个返回值时，使用对象解构，不使用数组解构，避免添加顺序的问题
+- 3.2.2 若函数有多个返回值时，使用对象解构，不使用数组解构，避免添加顺序的问题
 
 ```js
 // 不好
@@ -453,7 +407,7 @@ const { one, three, two } = anotherFun(); // 不用管顺序
 // one = 1, two = 2, three = 3
 ```
 
-- 3.3.3 已声明的变量不能用于解构赋值（语法错误）
+- 3.2.3 已声明的变量不能用于解构赋值（语法错误）
 
 ```js
 // 语法错误
@@ -461,11 +415,11 @@ let a;
 { a } = { b: 123};
 ```
 
-- 3.4 数组解构
+- 3.3 数组解构
 
 > 数组元素与顺序相关
 
-- 3.4.1 交换变量的值
+- 3.3.1 交换变量的值
 
 ```js
 let x = 1;
@@ -482,7 +436,7 @@ y = temp;
 [x, y] = [y, x]; // 交换变量
 ```
 
-- 3.4.2 将数组成员赋值给变量时，使用数组解构
+- 3.3.2 将数组成员赋值给变量时，使用数组解构
 
 ```js
 const arr = [1, 2, 3, 4, 5];
@@ -656,28 +610,7 @@ let test = x => ({ x: x }); // 使用括号可正确return {x:x}
 
 ```
 
-- 5.3 不使用 `arguments`, 采用rest语法`...`代替
-
-> rest参数是真正的数组，不需要再转换
-
-> 注意：箭头函数中不能使用`arguments`对象
-
-```js
-// 不好
-function foo() {
-  let args = Array.prototype.slice.call(arguments);
-  return args.join('');
-}
-
-
-// 好
-function foo(...args) {
-  return args.join('');
-}
-
-```
-
-- 5.4 函数参数指定默认值
+- 5.3 函数参数指定默认值
 
 > 采用函数默认参数赋值语法
 
@@ -694,7 +627,7 @@ function foo(opts = {}) {
 }
 ```
 
-- 5.5 对象中的函数方法使用缩写形式
+- 5.4 对象中的函数方法使用缩写形式
 
 > 更加简洁
 
@@ -855,34 +788,7 @@ class Dog {
 }
 ```
 
-- 6.5 class应先定义后使用
-
-> class不存在hoist问题，应先定义class再实例化
-
-> 使用继承时，应先定义父类再定义子类
-
-```js
-// 不好
-let foo = new Foo();
-class SubFoo extends Foo {
-
-}
-class Foo {
-
-}
-
-
-// 好
-class Foo {
-
-}
-let foo = new Foo();
-class SubFoo extends Foo {
-
-}
-```
-
-- 6.6 `this`的注意事项
+- 6.5 `this`的注意事项
 
 > 子类使用`super`关键字时，`this`应在调用`super`之后才能使用
 
@@ -937,7 +843,7 @@ export default lightRed;
 
 ```
 
-- 7.1.1 `import / export` 后面采用花括号`{ }`引入模块的写法时，须在花括号内左右各保留一个空格
+- 7.2 `import / export` 后面采用花括号`{ }`引入模块的写法时，须在花括号内左右各保留一个空格
 
 ```js
 // 不好
@@ -946,66 +852,5 @@ import { lightRed} from './colors';
 
 // 好
 import { lightRed } from './colors';
-```
-
-- 7.2 应确保每个module有且只有一个默认导出模块
-
-> 方便调用方使用
-
-```js
-// 不好
-const lightRed = '#F07';
-
-export lightRed;
-
-
-// 好
-const lightRed = '#F07';
-
-export default lightRed;
-```
-
-- 7.3 `import` 不使用统配符 `* ` 进行整体导入
-
-> 确保模块与模块之间的关系比较清晰
-
-```js
-// 不好
-import * as colors from './colors';
-
-// 好
-import colors from './colors';
-
-```
-
-- 7.4 不要将`import`与`export`混合在一行
-
-> 分开导入与导出，让结构更清晰，可读性更强
-
-```js
-// 不好
-export { lightRed as default } from './colors';
-
-// 好
-import { lightRed } from './colors';
-export default lightRed;
-```
-
-- 7.5 多变量要导出时应采用对象解构形式
-
-> `export`置于底部，使欲导出变量更加清晰
-
-```js
-// 不好
-export const lightRed = '#F07';
-export const black  = '#000';
-export const white  = '#FFF';
-
-// 好
-const lightRed = '#F07';
-const black  = '#000';
-const white  = '#FFF';
-
-export default { lightRed, black, white };
 ```
 **[⬆ 回到目录](#内容目录)**
