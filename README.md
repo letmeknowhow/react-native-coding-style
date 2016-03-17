@@ -1,4 +1,4 @@
-# ES6和React的规范在实践中仍然在不断改进，此处放弃跟进维护。建议大家直接在开发环境中使用[airbnb的eslint规范](https://github.com/airbnb/javascript)。
+# ES6和React的规范在实践中仍然在不断改进，此处放弃跟进维护。建议大家直接在开发环境中使用[airbnb的eslint规范](https://www.npmjs.com/package/eslint-config-airbnb)。
 
 # React Native 代码规范
 
